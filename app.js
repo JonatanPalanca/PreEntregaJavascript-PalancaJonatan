@@ -1,66 +1,67 @@
-// Variables
-let destino = "";
-let precio = 0;
-let opcion = 0;
+console.log("Bienvenido/a a TuriViajes");
 
-// Opciones disponibles
-function mostrarOpciones() {
-  console.log("Bienvenido a Turisviajes.");
-  console.log("Por favor, elija un destino:");
-  console.log("1. Bariloche (20000 pesos)");
-  console.log("2. Mendoza (15000 pesos)");
-  console.log("3. Salta (10000 pesos)");
-  console.log("4. Iguazú (25000 pesos)");
+const destinos = [
+  { nombre: "Bariloche", precio: 30000 },
+  { nombre: "Cordoba", precio: 25000 },
+  { nombre: "Mendoza", precio: 28000 },
+  { nombre: "Mar del Plata", precio: 12000 },
+  { nombre: "Salta", precio: 32000 },
+  { nombre: "Ushuaia", precio: 40000 },
+  { nombre: "Rosario", precio: 22000 },
+  { nombre: "Iguazu", precio: 35000 },
+];
+
+function mostrarDestinos() {
+  destinos.forEach(function (destino) {
+    console.log(destino.nombre + " (" + destino.precio + " pesos)");
+  });
 }
 
-// Destino elegido
-function preguntarDestino() {
-  do {
-    opcion = parseInt(
-      prompt("Por favor, ingrese el número del destino elegido:")
+function buscarDestino(nombre) {
+  return destinos.find(function (destino) {
+    return destino.nombre.toLowerCase() === nombre.toLowerCase();
+  });
+}
+
+function calcularTotal(destino, pasajeros) {
+  let total = destino.precio * pasajeros;
+  console.log(
+    "El precio total del viaje a " +
+      destino.nombre +
+      " para " +
+      pasajeros +
+      " pasajeros es de " +
+      total +
+      " pesos."
+  );
+}
+
+function realizarReserva() {
+  // Mostrar destinos disponibles
+  console.log("Destinos disponibles:");
+  mostrarDestinos();
+
+  // Preguntar al usuario por el destino elegido
+  let nombreDestino = prompt(
+    "Ingrese el nombre del destino elegido:"
+  ).toLowerCase();
+
+  // Buscar el objeto correspondiente al destino elegido
+  let destinoElegido = buscarDestino(nombreDestino);
+
+  if (destinoElegido) {
+    // Si se encontró el destino elegido, preguntar por la cantidad de pasajeros
+    let cantidadPasajeros = parseInt(
+      prompt("Ingrese la cantidad de pasajeros:")
     );
-    if (opcion === 1) {
-      destino = "Bariloche";
-      precio = 20000;
-      console.log("Ha elegido viajar a " + destino + ".");
-    } else if (opcion === 2) {
-      destino = "Mendoza";
-      precio = 15000;
-      console.log("Ha elegido viajar a " + destino + ".");
-    } else if (opcion === 3) {
-      destino = "Salta";
-      precio = 10000;
-      console.log("Ha elegido viajar a " + destino + ".");
-    } else if (opcion === 4) {
-      destino = "Iguazú";
-      precio = 25000;
-      console.log("Ha elegido viajar a " + destino + ".");
-    } else {
-      console.log("Opción inválida. Por favor, elija un número entre 1 y 4.");
-    }
-  } while (opcion < 1 || opcion > 4);
+
+    // Calcular y mostrar el precio total del viaje
+    calcularTotal(destinoElegido, cantidadPasajeros);
+  } else {
+    // Si no se encontró el destino elegido, mostrar un mensaje de error
+    console.log("El destino ingresado no está disponible.");
+  }
 }
 
-// Cantidad de pasajeros
-function preguntarPasajeros() {
-  let pasajeros = 0;
-  do {
-    pasajeros = parseInt(
-      prompt("Por favor, ingrese la cantidad de pasajeros:")
-    );
-    if (pasajeros <= 0) {
-      console.log("Opción inválida. Por favor, ingrese un número mayor a 0.");
-    }
-  } while (pasajeros <= 0);
-  console.log("Usted viajará con " + pasajeros + " pasajeros.");
-  precio *= pasajeros;
-}
-
-mostrarOpciones();
-preguntarDestino();
-preguntarPasajeros();
-
-// precio final usuario
-console.log(
-  "El precio final de su viaje a " + destino + " es de " + precio + " pesos."
-);
+// Llamar a la función
+realizarReserva();
